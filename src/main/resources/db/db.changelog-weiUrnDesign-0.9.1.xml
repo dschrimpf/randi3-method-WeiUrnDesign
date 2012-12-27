@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+    <changeSet author="dschrimpf" id="org.org.randi3.method.weiUrnDesign-1">
+        <createTable tableName="WeiUrnDesignRandomization">
+            <column autoIncrement="true" name="ID" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="Version" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="RandomizationMethodId" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="alpha" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="beta" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="dschrimpf" id="org.org.randi3.method.weiUrnDesign-2">
+        <createTable tableName="WeiUrn">
+            <column autoIncrement="true" name="ID" type="INT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="RandomizationMethodId" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TreatmentArmId" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="Stratum" type="VARCHAR(254)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="dschrimpf" id="org.org.randi3.method.weiUrnDesign-3">
+        <addForeignKeyConstraint baseColumnNames="RandomizationMethodId" baseTableName="WeiUrnDesignRandomization" constraintName="WeiUrnDesignRandomizationFK_RandomizationMethod" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="RandomizationMethod" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="dschrimpf" id="org.org.randi3.method.weiUrnDesign-4">
+        <addForeignKeyConstraint baseColumnNames="RandomizationMethodId" baseTableName="WeiUrn" constraintName="WeiUrnFK_RandomizationMethod" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="RandomizationMethod" referencesUniqueColumn="false"/>
+    </changeSet>
+    <changeSet author="dschrimpf" id="org.org.randi3.method.weiUrnDesign-5">
+        <addForeignKeyConstraint baseColumnNames="TreatmentArmId" baseTableName="WeiUrn" constraintName="WeiUrnFK_TreatmentArm" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="ID" referencedTableName="TreatmentArms" referencesUniqueColumn="false"/>
+    </changeSet>
+    
+</databaseChangeLog>
