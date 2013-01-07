@@ -20,5 +20,46 @@
         </license>
     </licenses>
 
+    <build>
+    <plugins>
+    <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.3</version>
+        <executions>
+            <execution>
+                <id>add-resource</id>
+                <phase>generate-resources</phase>
+                <goals>
+                    <goal>add-resource</goal>
+                </goals>
+                <configuration>
+                    <resources>
+                        <resource>
+                            <directory>resources</directory>
+                            <targetPath>resources</targetPath>
+                        </resource>
+                    </resources>
+                </configuration>
+            </execution>
+            <execution>
+                <id>add-test-resource</id>
+                <phase>generate-test-resources</phase>
+                <goals>
+                    <goal>add-test-resource</goal>
+                </goals>
+                <configuration>
+                    <resources>
+                        <resource>
+                            <directory>resources</directory>
+                            <targetPath>resources</targetPath>
+                        </resource>
+                    </resources>
+                </configuration>
+            </execution>
+        </executions>
+    </plugin>
+    </plugins>
+    </build>
 
 </project>

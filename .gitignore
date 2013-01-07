@@ -1,3 +1,5 @@
+test.properties
+
 # use glob syntax.
 syntax: glob
 *.ser

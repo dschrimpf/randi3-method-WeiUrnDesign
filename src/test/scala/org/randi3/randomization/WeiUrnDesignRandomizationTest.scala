@@ -15,7 +15,7 @@ import org.scalatest.FunSpec
 @RunWith(classOf[JUnitRunner])
 class WeiUrnDesignRandomizationTest extends FunSpec with MustMatchers {
 
-  import org.randi3.utility.TestingEnvironment._
+  import org.randi3.utility.TestingEnvironmentUrn._
 
   describe("Wei's urn design randomization method") {
 

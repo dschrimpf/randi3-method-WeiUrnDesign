@@ -20,7 +20,7 @@ import scala.Some
 @RunWith(classOf[JUnitRunner])
 class WeiUrnDesignRandomizationDaoSpec extends FunSpec with MustMatchers with ShouldMatchers {
 
-  import org.randi3.utility.TestingEnvironment._
+  import org.randi3.utility.TestingEnvironmentUrn._
 
   import driver.Implicit._
 
