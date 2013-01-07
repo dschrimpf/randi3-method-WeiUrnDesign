@@ -47,6 +47,7 @@ class WeiUrnDesignRandomizationPlugin(database: Database, driver: ExtendedProfil
 
   def randomizationMethod(random: RandomGenerator, trial: Trial, configuration: List[ConfigurationProperty[Any]]): Validation[String, RandomizationMethod] = {
     if (configuration.isEmpty) Failure("No configuration available")
+      if(trial.treatmentArms.size != 2) Failure("Only defined for two treatment arms")
     else Success(new WeiUrnDesignRandomization(alpha = configuration(0).value.asInstanceOf[Int], beta = configuration(1).value.asInstanceOf[Int])(random = random))
   }
 
