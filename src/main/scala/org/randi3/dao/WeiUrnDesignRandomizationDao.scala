@@ -34,7 +34,7 @@ class WeiUrnDesignRandomizationDao(database: Database, driver: ExtendedProfile) 
     database withSession {
       val identifier =
         threadLocalSession withTransaction {
-          RandomizationMethods.noId insert(trialId, generateBlob(randomizationMethod.random), randomizationMethod.getClass.getName)
+          RandomizationMethods.noId insert(trialId, generateBlob(randomizationMethod.random).get, randomizationMethod.getClass.getName)
           val id = getId(trialId).either match {
             case Left(x) => return Failure(x)
             case Right(id1) => id1
@@ -58,7 +58,7 @@ class WeiUrnDesignRandomizationDao(database: Database, driver: ExtendedProfile) 
             case Left(x) => return Failure(x)
             case Right(parameterRes) => parameterRes
           }
-          val weiUrnDesignRandomization = new WeiUrnDesignRandomization(rm._1.get, 0, parameter._1, parameter._2)(deserializeRandomGenerator(rm._2.get))
+          val weiUrnDesignRandomization = new WeiUrnDesignRandomization(rm._1.get, 0, parameter._1, parameter._2)(deserializeRandomGenerator(rm._2))
           getUrns(weiUrnDesignRandomization)
           return Success(Some(weiUrnDesignRandomization))
         }  else {
@@ -79,7 +79,7 @@ class WeiUrnDesignRandomizationDao(database: Database, driver: ExtendedProfile) 
             case Left(x) => return Failure(x)
             case Right(parameterRes) => parameterRes
           }
-          val weiUrnDesignRandomization = new WeiUrnDesignRandomization(rm._1.get, 0, parameter._1, parameter._2)(deserializeRandomGenerator(rm._3.get))
+          val weiUrnDesignRandomization = new WeiUrnDesignRandomization(rm._1.get, 0, parameter._1, parameter._2)(deserializeRandomGenerator(rm._3))
           getUrns(weiUrnDesignRandomization)
           return Success(Some(weiUrnDesignRandomization))
         } else {
@@ -95,7 +95,7 @@ class WeiUrnDesignRandomizationDao(database: Database, driver: ExtendedProfile) 
       threadLocalSession withTransaction {
         queryRandomizationMethodFromId(randomizationMethod.id).mutate {
           r =>
-            r.row = r.row.copy(_2 = generateBlob(randomizationMethod.random), _3 = randomizationMethod.getClass.getName)
+            r.row = r.row.copy(_2 = generateBlob(randomizationMethod.random).get, _3 = randomizationMethod.getClass.getName)
         }
         if (randomizationMethod.isInstanceOf[WeiUrnDesignRandomization]) {
           //update parameter
