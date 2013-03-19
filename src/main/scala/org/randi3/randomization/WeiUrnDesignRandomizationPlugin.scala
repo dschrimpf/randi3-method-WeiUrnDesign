@@ -13,9 +13,11 @@ import scalaz._
 import org.apache.commons.math3.random._
 
 import org.randi3.schema.{LiquibaseUtil, WeiUrnDesignRandomizationSchema}
+import org.randi3.utility.{I18NHelper, I18NRandomization, AbstractSecurityUtil}
 
-class WeiUrnDesignRandomizationPlugin(database: Database, driver: ExtendedProfile) extends RandomizationMethodPlugin(database, driver) {
+class WeiUrnDesignRandomizationPlugin(database: Database, driver: ExtendedProfile, securityUtil: AbstractSecurityUtil) extends RandomizationMethodPlugin(database, driver, securityUtil) {
 
+  private val i18n = new I18NRandomization(I18NHelper.getLocalizationMap("urnRandomizationM", getClass.getClassLoader), securityUtil)
 
   val schema = new WeiUrnDesignRandomizationSchema(driver)
   import schema._
@@ -23,21 +25,21 @@ class WeiUrnDesignRandomizationPlugin(database: Database, driver: ExtendedProfil
 
   val name = classOf[WeiUrnDesignRandomization].getName
 
-  val i18nName = name
+  def i18nName = i18n.text("name")
 
-  val description = "Wei's urn design algorithm (only for trials with two treatment arms"
+  def description = i18n.text("description")
 
   val canBeUsedWithStratification = true
 
   private val weiUrnDesignRandomizationDao = new WeiUrnDesignRandomizationDao(database, driver)
 
-  private val alphaConfigurationType = new IntegerConfigurationType(name = "alpha", description = "alpha")
+  private def alphaConfigurationType = new IntegerConfigurationType(name = i18n.text("alpha"), description =  i18n.text("alphaDesc"))
 
-  private val betaConfigurationType = new IntegerConfigurationType(name = "beta", description = "beta")
+  private def betaConfigurationType = new IntegerConfigurationType(name =  i18n.text("beta"), description =  i18n.text("betaDesc"))
 
 
-  def randomizationConfigurationOptions(): (List[ConfigurationType[Any]], List[Criterion[_ <: Any, Constraint[_ <: Any]]]) = {
-    (List(alphaConfigurationType, betaConfigurationType), Nil)
+  def randomizationConfigurationOptions(): (List[ConfigurationType[Any]], Map[String,List[Criterion[_ <: Any, Constraint[_ <: Any]]]]) = {
+    (List(alphaConfigurationType, betaConfigurationType), Map())
   }
 
   def getRandomizationConfigurations(id: Int): List[ConfigurationProperty[Any]] = {
@@ -46,8 +48,8 @@ class WeiUrnDesignRandomizationPlugin(database: Database, driver: ExtendedProfil
   }
 
   def randomizationMethod(random: RandomGenerator, trial: Trial, configuration: List[ConfigurationProperty[Any]]): Validation[String, RandomizationMethod] = {
-    if (configuration.isEmpty) Failure("No configuration available")
-      if(trial.treatmentArms.size != 2) Failure("Only defined for two treatment arms")
+    if (configuration.isEmpty) Failure(i18n.text("noConfAvailable"))
+      if(trial.treatmentArms.size != 2) Failure(i18n.text("onlyTwoTreatments"))
     else Success(new WeiUrnDesignRandomization(alpha = configuration(0).value.asInstanceOf[Int], beta = configuration(1).value.asInstanceOf[Int])(random = random))
   }
 

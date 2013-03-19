@@ -19,7 +19,7 @@ class WeiUrnDesignRandomizationSchema(driver: ExtendedProfile) {
   val schema = new DatabaseSchema(driver)
 
   object WeiUrnDesignRandomizations extends Table[(Int, Int, Option[Int], Int, Int)]("WeiUrnDesignRandomization") {
-    def id = column[Int]("ID", O PrimaryKey, O AutoInc)
+    def id = column[Int]("id", O PrimaryKey, O AutoInc)
 
     def version = column[Int]("Version", O NotNull)
 
@@ -37,7 +37,7 @@ class WeiUrnDesignRandomizationSchema(driver: ExtendedProfile) {
   }
 
   object WeiUrn extends Table[(Int, Option[Int], Int, String)]("WeiUrn") {
-    def id = column[Int]("ID", O PrimaryKey, O AutoInc)
+    def id = column[Int]("id", O PrimaryKey, O AutoInc)
 
     def randomizationMethodId = column[Option[Int]]("RandomizationMethodId")
 

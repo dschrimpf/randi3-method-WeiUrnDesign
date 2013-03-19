@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+    <changeSet author="dschrimpf" id="org.randi3.method.weiUrnDesign-0.9.2-1_mysql">
+        <preConditions onFail="MARK_RAN">
+            <dbms type="mysql" />
+        </preConditions>
+        <sql>
+            Alter table WeiUrnDesignRandomization change ID id int(11);
+            Alter table WeiUrnDesignRandomization modify column id int(11) auto_increment ;
+        </sql>
+    </changeSet>
+
+    <changeSet author="dschrimpf" id="org.randi3.method.weiUrnDesign-0.9.2-1_psql">
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="id" tableName="WeiUrnDesignRandomization" />
+            <dbms type="postgresql" />
+        </preConditions>
+        <renameColumn tableName="WeiUrnDesignRandomization" oldColumnName="ID" newColumnName="id" columnDataType="INT"/>
+    </changeSet>
+
+    <changeSet author="dschrimpf" id="org.randi3.method.weiUrnDesign-0.9.2-2_mysql">
+        <preConditions onFail="MARK_RAN">
+            <dbms type="mysql" />
+        </preConditions>
+        <sql>
+            Alter table WeiUrn change ID id int(11);
+            Alter table WeiUrn modify column id int(11) auto_increment ;
+        </sql>
+    </changeSet>
+
+    <changeSet author="dschrimpf" id="org.randi3.method.weiUrnDesign-0.9.2-2_psql">
+        <preConditions onFail="MARK_RAN">
+            <columnExists columnName="id" tableName="WeiUrn" />
+            <dbms type="postgresql" />
+        </preConditions>
+        <renameColumn tableName="WeiUrn" oldColumnName="ID" newColumnName="id" columnDataType="INT"/>
+    </changeSet>
+    
+</databaseChangeLog>
