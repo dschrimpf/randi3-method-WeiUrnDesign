@@ -19,7 +19,7 @@ case class WeiUrnDesignRandomization(id: Int = Int.MinValue, version: Int = 0, a
   }
 
   private def pullFromUrn(trial: Trial, subject: TrialSubject): TreatmentArm = {
-    val stratum = subject.getStratum(trial.stratifyTrialSite)
+    val stratum = subject.getStratum(trial.isStratifiedByTrialSite)
     val urn = urns.get(stratum).getOrElse {
       generateUrn(trial, subject)
       urns.get(stratum).get
@@ -36,7 +36,7 @@ case class WeiUrnDesignRandomization(id: Int = Int.MinValue, version: Int = 0, a
   }
 
    private def generateUrn(trial: Trial, subject: TrialSubject) {
-    val stratum = subject.getStratum(trial.stratifyTrialSite)
+    val stratum = subject.getStratum(trial.isStratifiedByTrialSite)
     val urn = urns.get(stratum).getOrElse {
       urns.put(stratum, new ListBuffer())
       urns.get(stratum).get
