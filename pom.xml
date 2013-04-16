@@ -4,11 +4,11 @@
   <parent>
     <artifactId>randi3-methods</artifactId>
     <groupId>org.randi3</groupId>
-    <version>0.9.2</version>
+    <version>0.9.3-SNAPSHOT</version>
   </parent>
   <groupId>org.randi3</groupId>
   <artifactId>randi3-method-WeiUrnDesign</artifactId>
-    <version>0.9.2</version>
+    <version>0.9.3-SNAPSHOT</version>
     <name>RANDI2 - Wei's urn design</name>
     <description>Wei's urn design</description>
     <url>http://randi2.org</url>
