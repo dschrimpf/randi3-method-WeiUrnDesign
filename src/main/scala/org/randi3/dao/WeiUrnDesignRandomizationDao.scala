@@ -1,10 +1,9 @@
 package org.randi3.dao
 
-import org.scalaquery.session._
-import org.scalaquery.session.Database.threadLocalSession
-import org.scalaquery.ql._
-import org.scalaquery.ql.TypeMapper._
-import org.scalaquery.ql.extended.ExtendedProfile
+import scala.slick.session.Database
+import scala.slick.session.Database.threadLocalSession
+import scala.slick.driver.ExtendedProfile
+import scala.slick.lifted._
 
 import org.randi3.randomization.WeiUrnDesignRandomization
 import scala.collection.mutable.ListBuffer
@@ -37,7 +36,7 @@ class WeiUrnDesignRandomizationDao(database: Database, driver: ExtendedProfile) 
           val seed = randomizationMethod.random.nextLong()
           randomizationMethod.random.setSeed(seed)
           RandomizationMethods.noId insert(trialId, generateBlob(randomizationMethod.random).get, randomizationMethod.getClass.getName, seed)
-          val id = getId(trialId).either match {
+          val id = getId(trialId).toEither match {
             case Left(x) => return Failure(x)
             case Right(id1) => id1
           }
@@ -56,7 +55,7 @@ class WeiUrnDesignRandomizationDao(database: Database, driver: ExtendedProfile) 
       else if (resultList.size == 1) {
         val rm = resultList(0)
         if (rm._4 == classOf[WeiUrnDesignRandomization].getName) {
-          val parameter = getWeiUrnParameter(id).either match {
+          val parameter = getWeiUrnParameter(id).toEither match {
             case Left(x) => return Failure(x)
             case Right(parameterRes) => parameterRes
           }
@@ -77,7 +76,7 @@ class WeiUrnDesignRandomizationDao(database: Database, driver: ExtendedProfile) 
       else if (resultList.size == 1) {
         val rm = resultList(0)
         if (rm._4 == classOf[WeiUrnDesignRandomization].getName) {
-          val parameter = getWeiUrnParameter(rm._1.get).either match {
+          val parameter = getWeiUrnParameter(rm._1.get).toEither match {
             case Left(x) => return Failure(x)
             case Right(parameterRes) => parameterRes
           }
@@ -109,7 +108,7 @@ class WeiUrnDesignRandomizationDao(database: Database, driver: ExtendedProfile) 
         updateUrns(randomizationMethod)
       }
     }
-    get(randomizationMethod.id).either match {
+    get(randomizationMethod.id).toEither match {
       case Left(x) => Failure(x)
       case Right(None) => Failure("Method not found")
       case Right(Some(weiUrnDesignRandomizationMethod)) => Success(weiUrnDesignRandomizationMethod)
